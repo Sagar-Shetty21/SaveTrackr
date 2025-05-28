@@ -31,7 +31,7 @@ export default function Home() {
     };
 
     const handleAuth = (type: string) => {
-        // For now, just show dashboard
+        // For now, just show dashboard.
         setShowDashboard(true);
     };
 
