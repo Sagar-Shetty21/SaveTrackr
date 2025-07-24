@@ -152,19 +152,6 @@ export default function Home() {
                                 <span>Previous</span>
                             </button>
 
-                            <div className="flex space-x-2">
-                                {onboardingPages.map((_, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`w-3 h-3 rounded-full transition-all ${
-                                            idx === currentPage
-                                                ? "bg-white"
-                                                : "bg-gray-600"
-                                        }`}
-                                    />
-                                ))}
-                            </div>
-
                             {!isLast ? (
                                 <button
                                     onClick={nextPage}
@@ -177,19 +164,27 @@ export default function Home() {
                                 <div className="flex space-x-4">
                                     <button
                                         onClick={() => handleAuth("login")}
-                                        className="px-8 py-3 border border-gray-600 text-white rounded-full hover:bg-gray-800 transition-all font-medium"
-                                    >
-                                        Login
-                                    </button>
-                                    <button
-                                        onClick={() => handleAuth("signup")}
                                         className="px-8 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all font-medium"
                                     >
-                                        Sign Up
+                                        Login
                                     </button>
                                 </div>
                             )}
                         </div>
+                    </div>
+                </div>
+                <div className="flex justify-center mt-6">
+                    <div className="flex space-x-2">
+                        {onboardingPages.map((_, idx) => (
+                            <div
+                                key={idx}
+                                className={`w-3 h-3 rounded-full transition-all ${
+                                    idx === currentPage
+                                        ? "bg-white"
+                                        : "bg-gray-600"
+                                }`}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
