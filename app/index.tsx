@@ -1,4 +1,7 @@
 import CustomHeader from "@/components/layout/CustomHeader";
+import { useTheme } from "@/context/ThemeContext";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { Theme } from "@/types/theme";
 import { Stack } from "expo-router";
 import { PieChart, Plus, Target, TrendingUp, Users } from "lucide-react-native";
 import { useState } from "react";
@@ -16,11 +19,12 @@ import {
 const { width, height } = Dimensions.get("window");
 
 export default function Home() {
+    const themeStore = useTheme();
+    const styles = useThemedStyles(createStyles);
+
     const Dashboard = () => (
         <SafeAreaView style={styles.dashboardContainer}>
             {/* <ResetOnboarding /> */}
-            <StatusBar barStyle="light-content" backgroundColor="#111827" />
-
             <ScrollView contentContainerStyle={styles.dashboardContent}>
                 <View style={styles.dashboardHeader}>
                     <Text style={styles.dashboardTitle}>
@@ -110,275 +114,233 @@ export default function Home() {
                         <CustomHeader
                             isHomeScreen={true}
                             user={user}
-                            // unreadNotifications={unreadNotifications}
                             onNotificationPress={handleNotificationPress}
                             onProfilePress={handleProfilePress}
+                            backgroundColor={themeStore.theme.colors.background}
                         />
                     ),
                 }}
             />
+            <StatusBar barStyle="light-content" backgroundColor="#111827" />
             <Dashboard />
         </>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#111827",
-    },
-    gradientBorder: {
-        flex: 1,
-        margin: 24,
-        borderRadius: 24,
-        padding: 4,
-    },
-    contentContainer: {
-        flex: 1,
-        backgroundColor: "#111827",
-        borderRadius: 20,
-        padding: 32,
-    },
-    scrollContent: {
-        flexGrow: 1,
-        alignItems: "center",
-        paddingBottom: 20,
-    },
-    iconContainer: {
-        marginBottom: 24,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: "bold",
-        color: "#ffffff",
-        textAlign: "center",
-        marginBottom: 16,
-    },
-    subtitle: {
-        fontSize: 20,
-        color: "#d1d5db",
-        textAlign: "center",
-        marginBottom: 24,
-    },
-    description: {
-        fontSize: 18,
-        color: "#9ca3af",
-        textAlign: "center",
-        lineHeight: 26,
-        maxWidth: width * 0.8,
-        marginBottom: 32,
-    },
-    featuresContainer: {
-        width: "100%",
-        gap: 16,
-    },
-    featureCard: {
-        backgroundColor: "#1f2937",
-        borderRadius: 12,
-        padding: 16,
-        alignItems: "center",
-    },
-    featureText: {
-        color: "#d1d5db",
-        textAlign: "center",
-        fontSize: 16,
-    },
-    navigationContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 32,
-    },
-    navButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderRadius: 24,
-    },
-    navButtonDisabled: {
-        opacity: 0.5,
-    },
-    navButtonText: {
-        color: "#d1d5db",
-        marginLeft: 8,
-        fontSize: 16,
-    },
-    navButtonTextDisabled: {
-        color: "#6b7280",
-    },
-    nextButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#ffffff",
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderRadius: 24,
-    },
-    nextButtonText: {
-        color: "#111827",
-        marginRight: 8,
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    loginButton: {
-        backgroundColor: "#2563eb",
-        paddingHorizontal: 32,
-        paddingVertical: 12,
-        borderRadius: 24,
-    },
-    loginButtonText: {
-        color: "#ffffff",
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    pagination: {
-        flexDirection: "row",
-        justifyContent: "center",
-        paddingVertical: 24,
-        gap: 8,
-    },
-    paginationDot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        backgroundColor: "#6b7280",
-    },
-    paginationDotActive: {
-        backgroundColor: "#ffffff",
-    },
-    dashboardContainer: {
-        flex: 1,
-        backgroundColor: "#111827",
-    },
-    header: {
-        backgroundColor: "#1f2937",
-        borderBottomWidth: 1,
-        borderBottomColor: "#374151",
-    },
-    headerContent: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingHorizontal: 24,
-        paddingVertical: 16,
-    },
-    headerLeft: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-    },
-    headerTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#ffffff",
-    },
-    headerRight: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 16,
-    },
-    welcomeText: {
-        color: "#d1d5db",
-        fontSize: 16,
-    },
-    avatar: {
-        width: 40,
-        height: 40,
-        backgroundColor: "#374151",
-        borderRadius: 20,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    avatarText: {
-        color: "#ffffff",
-        fontSize: 14,
-        fontWeight: "500",
-    },
-    dashboardContent: {
-        paddingHorizontal: 24,
-        paddingVertical: 48,
-    },
-    dashboardHeader: {
-        alignItems: "center",
-        marginBottom: 48,
-    },
-    dashboardTitle: {
-        fontSize: 32,
-        fontWeight: "bold",
-        color: "#ffffff",
-        marginBottom: 16,
-        textAlign: "center",
-    },
-    dashboardSubtitle: {
-        color: "#9ca3af",
-        fontSize: 18,
-        textAlign: "center",
-    },
-    emptyStateCard: {
-        backgroundColor: "#1f2937",
-        borderRadius: 16,
-        padding: 48,
-        alignItems: "center",
-        marginBottom: 64,
-    },
-    emptyStateIcon: {
-        width: 96,
-        height: 96,
-        backgroundColor: "#374151",
-        borderRadius: 48,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 24,
-    },
-    emptyStateTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#ffffff",
-        marginBottom: 16,
-    },
-    emptyStateDescription: {
-        color: "#9ca3af",
-        textAlign: "center",
-        fontSize: 16,
-        lineHeight: 24,
-        marginBottom: 32,
-        maxWidth: 280,
-    },
-    createGoalButton: {
-        backgroundColor: "#2563eb",
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 32,
-        paddingVertical: 16,
-        borderRadius: 12,
-        gap: 8,
-    },
-    createGoalButtonText: {
-        color: "#ffffff",
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    featuresPreview: {
-        gap: 32,
-    },
-    featurePreviewCard: {
-        backgroundColor: "#1f2937",
-        borderRadius: 12,
-        padding: 24,
-        alignItems: "center",
-    },
-    featurePreviewTitle: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "#ffffff",
-        marginTop: 16,
-        marginBottom: 8,
-    },
-    featurePreviewDescription: {
-        color: "#9ca3af",
-        textAlign: "center",
-        fontSize: 16,
-        lineHeight: 22,
-    },
-});
+const createStyles = (theme: Theme) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: theme.colors.background,
+        },
+        gradientBorder: {
+            flex: 1,
+            margin: 24,
+            borderRadius: 24,
+            padding: 4,
+        },
+        contentContainer: {
+            flex: 1,
+            backgroundColor: theme.colors.background,
+            borderRadius: 20,
+            padding: 32,
+        },
+        scrollContent: {
+            flexGrow: 1,
+            alignItems: "center",
+            paddingBottom: 20,
+        },
+        iconContainer: {
+            marginBottom: 24,
+        },
+        title: {
+            fontSize: 32,
+            fontWeight: "bold",
+            color: "#ffffff",
+            textAlign: "center",
+            marginBottom: 16,
+        },
+        subtitle: {
+            fontSize: 20,
+            color: "#d1d5db",
+            textAlign: "center",
+            marginBottom: 24,
+        },
+        description: {
+            fontSize: 18,
+            color: "#9ca3af",
+            textAlign: "center",
+            lineHeight: 26,
+            maxWidth: width * 0.8,
+            marginBottom: 32,
+        },
+        featuresContainer: {
+            width: "100%",
+            gap: 16,
+        },
+        featureCard: {
+            backgroundColor: "#1f2937",
+            borderRadius: 12,
+            padding: 16,
+            alignItems: "center",
+        },
+        featureText: {
+            color: "#d1d5db",
+            textAlign: "center",
+            fontSize: 16,
+        },
+        navigationContainer: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 32,
+        },
+        navButton: {
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+            borderRadius: 24,
+        },
+        navButtonDisabled: {
+            opacity: 0.5,
+        },
+        navButtonText: {
+            color: "#d1d5db",
+            marginLeft: 8,
+            fontSize: 16,
+        },
+        navButtonTextDisabled: {
+            color: "#6b7280",
+        },
+        nextButton: {
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "#ffffff",
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+            borderRadius: 24,
+        },
+        nextButtonText: {
+            color: "#111827",
+            marginRight: 8,
+            fontSize: 16,
+            fontWeight: "500",
+        },
+        loginButton: {
+            backgroundColor: "#2563eb",
+            paddingHorizontal: 32,
+            paddingVertical: 12,
+            borderRadius: 24,
+        },
+        loginButtonText: {
+            color: "#ffffff",
+            fontSize: 16,
+            fontWeight: "500",
+        },
+        pagination: {
+            flexDirection: "row",
+            justifyContent: "center",
+            paddingVertical: 24,
+            gap: 8,
+        },
+        paginationDot: {
+            width: 12,
+            height: 12,
+            borderRadius: 6,
+            backgroundColor: "#6b7280",
+        },
+        paginationDotActive: {
+            backgroundColor: "#ffffff",
+        },
+        dashboardContainer: {
+            flex: 1,
+            backgroundColor: theme.colors.background,
+        },
+        dashboardContent: {
+            paddingHorizontal: 24,
+            paddingVertical: 48,
+        },
+        dashboardHeader: {
+            alignItems: "center",
+            marginBottom: 48,
+        },
+        dashboardTitle: {
+            fontSize: 32,
+            fontWeight: "bold",
+            color: "#ffffff",
+            marginBottom: 16,
+            textAlign: "center",
+        },
+        dashboardSubtitle: {
+            color: "#9ca3af",
+            fontSize: 18,
+            textAlign: "center",
+        },
+        emptyStateCard: {
+            backgroundColor: "#1f2937",
+            borderRadius: 16,
+            padding: 48,
+            alignItems: "center",
+            marginBottom: 64,
+        },
+        emptyStateIcon: {
+            width: 96,
+            height: 96,
+            backgroundColor: "#374151",
+            borderRadius: 48,
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 24,
+        },
+        emptyStateTitle: {
+            fontSize: 24,
+            fontWeight: "bold",
+            color: "#ffffff",
+            marginBottom: 16,
+        },
+        emptyStateDescription: {
+            color: "#9ca3af",
+            textAlign: "center",
+            fontSize: 16,
+            lineHeight: 24,
+            marginBottom: 32,
+            maxWidth: 280,
+        },
+        createGoalButton: {
+            backgroundColor: "#2563eb",
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 32,
+            paddingVertical: 16,
+            borderRadius: 12,
+            gap: 8,
+        },
+        createGoalButtonText: {
+            color: "#ffffff",
+            fontSize: 16,
+            fontWeight: "500",
+        },
+        featuresPreview: {
+            gap: 32,
+        },
+        featurePreviewCard: {
+            backgroundColor: "#1f2937",
+            borderRadius: 12,
+            padding: 24,
+            alignItems: "center",
+        },
+        featurePreviewTitle: {
+            fontSize: 18,
+            fontWeight: "600",
+            color: "#ffffff",
+            marginTop: 16,
+            marginBottom: 8,
+        },
+        featurePreviewDescription: {
+            color: "#9ca3af",
+            textAlign: "center",
+            fontSize: 16,
+            lineHeight: 22,
+        },
+    });

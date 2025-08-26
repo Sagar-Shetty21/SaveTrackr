@@ -1,4 +1,6 @@
 // components/CustomHeader.tsx
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { Theme } from "@/types/theme";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -29,6 +31,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
     backgroundColor = "#111827",
     textColor = "#ffffff",
 }) => {
+    const styles = useThemedStyles(createStyles);
     const insets = useSafeAreaInsets();
 
     const renderLeftContent = () => {
@@ -120,115 +123,116 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 20,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
+const createStyles = (theme: Theme) =>
+    StyleSheet.create({
+        container: {
+            paddingHorizontal: 20,
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.1,
+            shadowRadius: 3.84,
+            elevation: 5,
         },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    content: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        minHeight: 50,
-        padding: 12,
-    },
-    profileContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        flex: 1,
-    },
-    avatarContainer: {
-        marginRight: 12,
-    },
-    avatar: {
-        width: 45,
-        height: 45,
-        borderRadius: 22.5,
-    },
-    defaultAvatar: {
-        backgroundColor: "#4c6ef5",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    avatarText: {
-        color: "#ffffff",
-        fontSize: 18,
-        fontWeight: "600",
-    },
-    userInfo: {
-        flex: 1,
-    },
-    greeting: {
-        fontSize: 12,
-        color: "#a0a0a0",
-        marginBottom: 2,
-    },
-    userName: {
-        fontSize: 16,
-        fontWeight: "600",
-    },
-    backContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        flex: 1,
-    },
-    backButton: {
-        width: 40,
-        height: 40,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 20,
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
-        marginRight: 12,
-    },
-    backIcon: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    pageTitle: {
-        fontSize: 18,
-        fontWeight: "600",
-        flex: 1,
-    },
-    notificationButton: {
-        width: 40,
-        height: 40,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 20,
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
-    },
-    notificationIconContainer: {
-        position: "relative",
-    },
-    notificationIcon: {
-        fontSize: 20,
-    },
-    notificationBadge: {
-        position: "absolute",
-        top: -8,
-        right: -8,
-        backgroundColor: "#ff4757",
-        borderRadius: 10,
-        width: 20,
-        height: 20,
-        justifyContent: "center",
-        alignItems: "center",
-        borderWidth: 2,
-        borderColor: "#1a1a2e",
-    },
-    badgeText: {
-        color: "#ffffff",
-        fontSize: 10,
-        fontWeight: "bold",
-    },
-});
+        content: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            minHeight: 50,
+            padding: 12,
+        },
+        profileContainer: {
+            flexDirection: "row",
+            alignItems: "center",
+            flex: 1,
+        },
+        avatarContainer: {
+            marginRight: 12,
+        },
+        avatar: {
+            width: 45,
+            height: 45,
+            borderRadius: 22.5,
+        },
+        defaultAvatar: {
+            backgroundColor: "#4c6ef5",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        avatarText: {
+            color: "#ffffff",
+            fontSize: 18,
+            fontWeight: "600",
+        },
+        userInfo: {
+            flex: 1,
+        },
+        greeting: {
+            fontSize: 12,
+            color: "#a0a0a0",
+            marginBottom: 2,
+        },
+        userName: {
+            fontSize: 16,
+            fontWeight: "600",
+        },
+        backContainer: {
+            flexDirection: "row",
+            alignItems: "center",
+            flex: 1,
+        },
+        backButton: {
+            width: 40,
+            height: 40,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 20,
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            marginRight: 12,
+        },
+        backIcon: {
+            fontSize: 20,
+            fontWeight: "bold",
+        },
+        pageTitle: {
+            fontSize: 18,
+            fontWeight: "600",
+            flex: 1,
+        },
+        notificationButton: {
+            width: 40,
+            height: 40,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 20,
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+        },
+        notificationIconContainer: {
+            position: "relative",
+        },
+        notificationIcon: {
+            fontSize: 20,
+        },
+        notificationBadge: {
+            position: "absolute",
+            top: -8,
+            right: -8,
+            backgroundColor: "#ff4757",
+            borderRadius: 10,
+            width: 20,
+            height: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            borderWidth: 2,
+            borderColor: "#1a1a2e",
+        },
+        badgeText: {
+            color: "#ffffff",
+            fontSize: 10,
+            fontWeight: "bold",
+        },
+    });
 
 export default CustomHeader;

@@ -1,6 +1,9 @@
+import { ThemeProvider } from "@/context/ThemeContext";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
+
+// SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
     const { getItem, setItem } = useAsyncStorage("hasOnboarded");
@@ -22,18 +25,20 @@ export default function RootLayout() {
     if (isFirstLaunch === null) return null; // or splash screen
 
     return (
-        <Stack>
-            {isFirstLaunch ? (
-                <Stack.Screen
-                    name="onboarding"
-                    options={{ headerShown: false }}
-                />
-            ) : (
-                <Stack.Screen
-                    name="index"
-                    options={{ headerShown: true, title: "Home" }}
-                />
-            )}
-        </Stack>
+        <ThemeProvider>
+            <Stack>
+                {isFirstLaunch ? (
+                    <Stack.Screen
+                        name="onboarding"
+                        options={{ headerShown: false }}
+                    />
+                ) : (
+                    <Stack.Screen
+                        name="index"
+                        options={{ headerShown: true, title: "Home" }}
+                    />
+                )}
+            </Stack>
+        </ThemeProvider>
     );
 }
