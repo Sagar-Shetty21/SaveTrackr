@@ -1,15 +1,9 @@
-import { LinearGradient } from "expo-linear-gradient";
-import {
-    ChevronLeft,
-    ChevronRight,
-    DollarSign,
-    Edit3,
-    PieChart,
-    Plus,
-    Target,
-    TrendingUp,
-    Users,
-} from "lucide-react-native";
+import CustomHeader from "@/components/layout/CustomHeader";
+import { useTheme } from "@/context/ThemeContext";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { Theme } from "@/types/theme";
+import { Stack } from "expo-router";
+import { PieChart, Plus, Target, TrendingUp, Users } from "lucide-react-native";
 import { useState } from "react";
 import {
     Dimensions,
@@ -24,231 +18,13 @@ import {
 
 const { width, height } = Dimensions.get("window");
 
-export default function App() {
-    const [currentPage, setCurrentPage] = useState(0);
-    const [showDashboard, setShowDashboard] = useState(false);
-
-    const nextPage = () => {
-        if (currentPage < onboardingPages.length - 1) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const prevPage = () => {
-        if (currentPage > 0) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
-    const handleAuth = (type) => {
-        setShowDashboard(true);
-    };
-
-    const onboardingPages = [
-        {
-            title: "Welcome to SaveTrackr",
-            subtitle: "Your collaborative savings companion",
-            description:
-                "Track savings goals with friends, family, and teammates. Make saving money a shared journey towards your dreams.",
-            icon: Target,
-            gradient: ["#2563eb", "#9333ea"],
-            iconColor: "#60a5fa",
-        },
-        {
-            title: "Create Savings Goals",
-            subtitle: "Set your targets and watch them grow",
-            description:
-                "Define your savings goals with custom amounts or simply name your dreams. Whether it's a vacation, new car, or emergency fund - we've got you covered.",
-            icon: DollarSign,
-            gradient: ["#059669", "#0d9488"],
-            iconColor: "#4ade80",
-            features: [
-                "Set target amounts or goal names",
-                "Add detailed descriptions",
-                "Track multiple goals simultaneously",
-            ],
-        },
-        {
-            title: "Invite Your Circle",
-            subtitle: "Saving is better together",
-            description:
-                "Add family members, friends, or colleagues to your goals. Give them view or edit access to keep everyone engaged and accountable.",
-            icon: Users,
-            gradient: ["#9333ea", "#ec4899"],
-            iconColor: "#c084fc",
-            features: [
-                "Add unlimited members",
-                "Control access levels (View/Edit)",
-                "Collaborate on shared goals",
-            ],
-        },
-        {
-            title: "Track Every Contribution",
-            subtitle: "Log deposits and withdrawals with ease",
-            description:
-                "Members with edit access can add transactions, track who contributed what, and add notes to keep everyone informed.",
-            icon: Edit3,
-            gradient: ["#ea580c", "#dc2626"],
-            iconColor: "#fb923c",
-            features: [
-                "Add/remove funds instantly",
-                "Track individual contributions",
-                "Add notes and context",
-            ],
-        },
-        {
-            title: "Visualize Your Progress",
-            subtitle: "Beautiful insights at your fingertips",
-            description:
-                "Get detailed analytics, progress charts, and insights about your savings goals. See who's contributing the most and celebrate milestones together.",
-            icon: TrendingUp,
-            gradient: ["#0891b2", "#2563eb"],
-            iconColor: "#22d3ee",
-            features: [
-                "Progress tracking charts",
-                "Contribution leaderboards",
-                "Goal completion insights",
-            ],
-        },
-    ];
-
-    const OnboardingPage = ({ page, isLast }) => {
-        const IconComponent = page.icon;
-
-        return (
-            <SafeAreaView style={styles.container}>
-                <StatusBar barStyle="light-content" backgroundColor="#111827" />
-                <LinearGradient
-                    colors={page.gradient}
-                    style={styles.gradientBorder}
-                >
-                    <View style={styles.contentContainer}>
-                        <ScrollView
-                            contentContainerStyle={styles.scrollContent}
-                            showsVerticalScrollIndicator={false}
-                        >
-                            <View style={styles.iconContainer}>
-                                <IconComponent
-                                    size={96}
-                                    color={page.iconColor}
-                                />
-                            </View>
-
-                            <Text style={styles.title}>{page.title}</Text>
-                            <Text style={styles.subtitle}>{page.subtitle}</Text>
-                            <Text style={styles.description}>
-                                {page.description}
-                            </Text>
-
-                            {page.features && (
-                                <View style={styles.featuresContainer}>
-                                    {page.features.map(
-                                        (feature: string, idx: number) => (
-                                            <View
-                                                key={idx}
-                                                style={styles.featureCard}
-                                            >
-                                                <Text
-                                                    style={styles.featureText}
-                                                >
-                                                    {feature}
-                                                </Text>
-                                            </View>
-                                        )
-                                    )}
-                                </View>
-                            )}
-                        </ScrollView>
-
-                        <View style={styles.navigationContainer}>
-                            <TouchableOpacity
-                                onPress={prevPage}
-                                disabled={currentPage === 0}
-                                style={[
-                                    styles.navButton,
-                                    currentPage === 0 &&
-                                        styles.navButtonDisabled,
-                                ]}
-                            >
-                                <ChevronLeft
-                                    size={20}
-                                    color={
-                                        currentPage === 0
-                                            ? "#6b7280"
-                                            : "#d1d5db"
-                                    }
-                                />
-                                <Text
-                                    style={[
-                                        styles.navButtonText,
-                                        currentPage === 0 &&
-                                            styles.navButtonTextDisabled,
-                                    ]}
-                                >
-                                    Previous
-                                </Text>
-                            </TouchableOpacity>
-
-                            {!isLast ? (
-                                <TouchableOpacity
-                                    onPress={nextPage}
-                                    style={styles.nextButton}
-                                >
-                                    <Text style={styles.nextButtonText}>
-                                        Next
-                                    </Text>
-                                    <ChevronRight size={20} color="#111827" />
-                                </TouchableOpacity>
-                            ) : (
-                                <TouchableOpacity
-                                    onPress={() => handleAuth("login")}
-                                    style={styles.loginButton}
-                                >
-                                    <Text style={styles.loginButtonText}>
-                                        Login
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
-                        </View>
-                    </View>
-                </LinearGradient>
-
-                <View style={styles.pagination}>
-                    {onboardingPages.map((_, idx) => (
-                        <View
-                            key={idx}
-                            style={[
-                                styles.paginationDot,
-                                idx === currentPage &&
-                                    styles.paginationDotActive,
-                            ]}
-                        />
-                    ))}
-                </View>
-            </SafeAreaView>
-        );
-    };
+export default function Home() {
+    const themeStore = useTheme();
+    const styles = useThemedStyles(createStyles);
 
     const Dashboard = () => (
         <SafeAreaView style={styles.dashboardContainer}>
-            <StatusBar barStyle="light-content" backgroundColor="#111827" />
-
-            {/* Header */}
-            <View style={styles.header}>
-                <View style={styles.headerContent}>
-                    <View style={styles.headerLeft}>
-                        <Target size={32} color="#60a5fa" />
-                        <Text style={styles.headerTitle}>SaveTrackr</Text>
-                    </View>
-                    <View style={styles.headerRight}>
-                        <Text style={styles.welcomeText}>Welcome back!</Text>
-                        <View style={styles.avatar}>
-                            <Text style={styles.avatarText}>U</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-
+            {/* <ResetOnboarding /> */}
             <ScrollView contentContainerStyle={styles.dashboardContent}>
                 <View style={styles.dashboardHeader}>
                     <Text style={styles.dashboardTitle}>
@@ -314,275 +90,257 @@ export default function App() {
         </SafeAreaView>
     );
 
-    if (showDashboard) {
-        return <Dashboard />;
-    }
+    const [unreadNotifications, setUnreadNotifications] = useState(5);
+    const [user, setUser] = useState({
+        name: "John Doe",
+        avatar: "data:image/jpeg;base64,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",
+    });
+
+    const handleNotificationPress = () => {
+        // Handle notification press
+        setUnreadNotifications(0); // Mark as read
+    };
+
+    const handleProfilePress = () => {
+        // Handle profile press
+    };
 
     return (
-        <OnboardingPage
-            page={onboardingPages[currentPage]}
-            isLast={currentPage === onboardingPages.length - 1}
-        />
+        <>
+            <Stack.Screen
+                options={{
+                    headerShown: true,
+                    header: () => (
+                        <CustomHeader
+                            isHomeScreen={true}
+                            user={user}
+                            onNotificationPress={handleNotificationPress}
+                            onProfilePress={handleProfilePress}
+                            backgroundColor={themeStore.theme.colors.background}
+                        />
+                    ),
+                }}
+            />
+            <StatusBar barStyle="light-content" backgroundColor="#111827" />
+            <Dashboard />
+        </>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#111827",
-    },
-    gradientBorder: {
-        flex: 1,
-        margin: 24,
-        borderRadius: 24,
-        padding: 4,
-    },
-    contentContainer: {
-        flex: 1,
-        backgroundColor: "#111827",
-        borderRadius: 20,
-        padding: 32,
-    },
-    scrollContent: {
-        flexGrow: 1,
-        alignItems: "center",
-        paddingBottom: 20,
-    },
-    iconContainer: {
-        marginBottom: 24,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: "bold",
-        color: "#ffffff",
-        textAlign: "center",
-        marginBottom: 16,
-    },
-    subtitle: {
-        fontSize: 20,
-        color: "#d1d5db",
-        textAlign: "center",
-        marginBottom: 24,
-    },
-    description: {
-        fontSize: 18,
-        color: "#9ca3af",
-        textAlign: "center",
-        lineHeight: 26,
-        maxWidth: width * 0.8,
-        marginBottom: 32,
-    },
-    featuresContainer: {
-        width: "100%",
-        gap: 16,
-    },
-    featureCard: {
-        backgroundColor: "#1f2937",
-        borderRadius: 12,
-        padding: 16,
-        alignItems: "center",
-    },
-    featureText: {
-        color: "#d1d5db",
-        textAlign: "center",
-        fontSize: 16,
-    },
-    navigationContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 32,
-    },
-    navButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderRadius: 24,
-    },
-    navButtonDisabled: {
-        opacity: 0.5,
-    },
-    navButtonText: {
-        color: "#d1d5db",
-        marginLeft: 8,
-        fontSize: 16,
-    },
-    navButtonTextDisabled: {
-        color: "#6b7280",
-    },
-    nextButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#ffffff",
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderRadius: 24,
-    },
-    nextButtonText: {
-        color: "#111827",
-        marginRight: 8,
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    loginButton: {
-        backgroundColor: "#2563eb",
-        paddingHorizontal: 32,
-        paddingVertical: 12,
-        borderRadius: 24,
-    },
-    loginButtonText: {
-        color: "#ffffff",
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    pagination: {
-        flexDirection: "row",
-        justifyContent: "center",
-        paddingVertical: 24,
-        gap: 8,
-    },
-    paginationDot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        backgroundColor: "#6b7280",
-    },
-    paginationDotActive: {
-        backgroundColor: "#ffffff",
-    },
-    dashboardContainer: {
-        flex: 1,
-        backgroundColor: "#111827",
-    },
-    header: {
-        backgroundColor: "#1f2937",
-        borderBottomWidth: 1,
-        borderBottomColor: "#374151",
-    },
-    headerContent: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingHorizontal: 24,
-        paddingVertical: 16,
-    },
-    headerLeft: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-    },
-    headerTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#ffffff",
-    },
-    headerRight: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 16,
-    },
-    welcomeText: {
-        color: "#d1d5db",
-        fontSize: 16,
-    },
-    avatar: {
-        width: 40,
-        height: 40,
-        backgroundColor: "#374151",
-        borderRadius: 20,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    avatarText: {
-        color: "#ffffff",
-        fontSize: 14,
-        fontWeight: "500",
-    },
-    dashboardContent: {
-        paddingHorizontal: 24,
-        paddingVertical: 48,
-    },
-    dashboardHeader: {
-        alignItems: "center",
-        marginBottom: 48,
-    },
-    dashboardTitle: {
-        fontSize: 32,
-        fontWeight: "bold",
-        color: "#ffffff",
-        marginBottom: 16,
-        textAlign: "center",
-    },
-    dashboardSubtitle: {
-        color: "#9ca3af",
-        fontSize: 18,
-        textAlign: "center",
-    },
-    emptyStateCard: {
-        backgroundColor: "#1f2937",
-        borderRadius: 16,
-        padding: 48,
-        alignItems: "center",
-        marginBottom: 64,
-    },
-    emptyStateIcon: {
-        width: 96,
-        height: 96,
-        backgroundColor: "#374151",
-        borderRadius: 48,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 24,
-    },
-    emptyStateTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#ffffff",
-        marginBottom: 16,
-    },
-    emptyStateDescription: {
-        color: "#9ca3af",
-        textAlign: "center",
-        fontSize: 16,
-        lineHeight: 24,
-        marginBottom: 32,
-        maxWidth: 280,
-    },
-    createGoalButton: {
-        backgroundColor: "#2563eb",
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 32,
-        paddingVertical: 16,
-        borderRadius: 12,
-        gap: 8,
-    },
-    createGoalButtonText: {
-        color: "#ffffff",
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    featuresPreview: {
-        gap: 32,
-    },
-    featurePreviewCard: {
-        backgroundColor: "#1f2937",
-        borderRadius: 12,
-        padding: 24,
-        alignItems: "center",
-    },
-    featurePreviewTitle: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "#ffffff",
-        marginTop: 16,
-        marginBottom: 8,
-    },
-    featurePreviewDescription: {
-        color: "#9ca3af",
-        textAlign: "center",
-        fontSize: 16,
-        lineHeight: 22,
-    },
-});
+const createStyles = (theme: Theme) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: theme.colors.background,
+        },
+        gradientBorder: {
+            flex: 1,
+            margin: 24,
+            borderRadius: 24,
+            padding: 4,
+        },
+        contentContainer: {
+            flex: 1,
+            backgroundColor: theme.colors.background,
+            borderRadius: 20,
+            padding: 32,
+        },
+        scrollContent: {
+            flexGrow: 1,
+            alignItems: "center",
+            paddingBottom: 20,
+        },
+        iconContainer: {
+            marginBottom: 24,
+        },
+        title: {
+            fontSize: 32,
+            fontWeight: "bold",
+            color: "#ffffff",
+            textAlign: "center",
+            marginBottom: 16,
+        },
+        subtitle: {
+            fontSize: 20,
+            color: "#d1d5db",
+            textAlign: "center",
+            marginBottom: 24,
+        },
+        description: {
+            fontSize: 18,
+            color: "#9ca3af",
+            textAlign: "center",
+            lineHeight: 26,
+            maxWidth: width * 0.8,
+            marginBottom: 32,
+        },
+        featuresContainer: {
+            width: "100%",
+            gap: 16,
+        },
+        featureCard: {
+            backgroundColor: "#1f2937",
+            borderRadius: 12,
+            padding: 16,
+            alignItems: "center",
+        },
+        featureText: {
+            color: "#d1d5db",
+            textAlign: "center",
+            fontSize: 16,
+        },
+        navigationContainer: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 32,
+        },
+        navButton: {
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+            borderRadius: 24,
+        },
+        navButtonDisabled: {
+            opacity: 0.5,
+        },
+        navButtonText: {
+            color: "#d1d5db",
+            marginLeft: 8,
+            fontSize: 16,
+        },
+        navButtonTextDisabled: {
+            color: "#6b7280",
+        },
+        nextButton: {
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "#ffffff",
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+            borderRadius: 24,
+        },
+        nextButtonText: {
+            color: "#111827",
+            marginRight: 8,
+            fontSize: 16,
+            fontWeight: "500",
+        },
+        loginButton: {
+            backgroundColor: "#2563eb",
+            paddingHorizontal: 32,
+            paddingVertical: 12,
+            borderRadius: 24,
+        },
+        loginButtonText: {
+            color: "#ffffff",
+            fontSize: 16,
+            fontWeight: "500",
+        },
+        pagination: {
+            flexDirection: "row",
+            justifyContent: "center",
+            paddingVertical: 24,
+            gap: 8,
+        },
+        paginationDot: {
+            width: 12,
+            height: 12,
+            borderRadius: 6,
+            backgroundColor: "#6b7280",
+        },
+        paginationDotActive: {
+            backgroundColor: "#ffffff",
+        },
+        dashboardContainer: {
+            flex: 1,
+            backgroundColor: theme.colors.background,
+        },
+        dashboardContent: {
+            paddingHorizontal: 24,
+            paddingVertical: 48,
+        },
+        dashboardHeader: {
+            alignItems: "center",
+            marginBottom: 48,
+        },
+        dashboardTitle: {
+            fontSize: 32,
+            fontWeight: "bold",
+            color: "#ffffff",
+            marginBottom: 16,
+            textAlign: "center",
+        },
+        dashboardSubtitle: {
+            color: "#9ca3af",
+            fontSize: 18,
+            textAlign: "center",
+        },
+        emptyStateCard: {
+            backgroundColor: "#1f2937",
+            borderRadius: 16,
+            padding: 48,
+            alignItems: "center",
+            marginBottom: 64,
+        },
+        emptyStateIcon: {
+            width: 96,
+            height: 96,
+            backgroundColor: "#374151",
+            borderRadius: 48,
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 24,
+        },
+        emptyStateTitle: {
+            fontSize: 24,
+            fontWeight: "bold",
+            color: "#ffffff",
+            marginBottom: 16,
+        },
+        emptyStateDescription: {
+            color: "#9ca3af",
+            textAlign: "center",
+            fontSize: 16,
+            lineHeight: 24,
+            marginBottom: 32,
+            maxWidth: 280,
+        },
+        createGoalButton: {
+            backgroundColor: "#2563eb",
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 32,
+            paddingVertical: 16,
+            borderRadius: 12,
+            gap: 8,
+        },
+        createGoalButtonText: {
+            color: "#ffffff",
+            fontSize: 16,
+            fontWeight: "500",
+        },
+        featuresPreview: {
+            gap: 32,
+        },
+        featurePreviewCard: {
+            backgroundColor: "#1f2937",
+            borderRadius: 12,
+            padding: 24,
+            alignItems: "center",
+        },
+        featurePreviewTitle: {
+            fontSize: 18,
+            fontWeight: "600",
+            color: "#ffffff",
+            marginTop: 16,
+            marginBottom: 8,
+        },
+        featurePreviewDescription: {
+            color: "#9ca3af",
+            textAlign: "center",
+            fontSize: 16,
+            lineHeight: 22,
+        },
+    });
